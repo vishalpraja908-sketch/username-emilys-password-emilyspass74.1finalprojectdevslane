@@ -1,8 +1,10 @@
-import React from 'react'
+ import React from 'react'
 import { PiShoppingCartThin } from 'react-icons/pi'
 import { Link } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+
+
 
 function callForgotPasswordApi(values) {
     console.log(values.email)
@@ -15,7 +17,7 @@ const Schema = Yup.object().shape({
 })
 
 const ForgotPassword = () => {
-    const { handleChange, handleBlur, touched, handleSubmit, errors, values } = useFormik({
+    const { handleChange, handleBlur, touched, handleSubmit, errors } = useFormik({
         initialValues: {
             email: ""
         },
@@ -65,4 +67,4 @@ const ForgotPassword = () => {
     )
 }
 
-export default ForgotPassword
+export default ForgotPassword;

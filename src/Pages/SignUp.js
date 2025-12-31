@@ -1,13 +1,44 @@
-import { useFormik } from 'formik'
-import React from 'react'
+import { useFormik } from 'formik';
+import React from 'react';
 import { PiShoppingCartThin } from 'react-icons/pi'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 
+import axios from "axios";
 const SignUp = () => {
+     const navigate = useNavigate();
     function callSignUpApi(values){
-        console.log(" Api called with", values.username, values.email, values.password)
-    }
+       axios
+    .post("https://dummyjson.com/users/add", {
+     fullName: values.username,
+      email: values.email,
+      password: values.password,
+    })
+    .then((response) => {
+      console.log("Signup successful", response.data);
+      alert("signUp successfully ");
+      navigate("/login");
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log("Signup error", error.response.data);
+        alert(
+          "Signup failed: " +
+            (error.response.data.message || JSON.stringify(error.response.data))
+        );
+      } else if (error.request) {
+        console.log("No response received", error.request);
+        alert("No response from server. Please try again later.");
+      } else {
+        console.log("Error", error.message);
+        alert("Error: " + error.message);
+      }
+    });
+  
+}
+
+
+
     
     const Schema = Yup.object().shape({
         username: Yup.string()
@@ -24,7 +55,7 @@ const SignUp = () => {
             .required('kya aapka password confirm ha')
     })
     
-    const {handleBlur, touched, handleChange, handleSubmit, values, errors} = useFormik({
+    const {handleBlur, touched, handleChange, handleSubmit,  errors} = useFormik({
         initialValues: {
             email: "",
             username: "",
@@ -36,7 +67,7 @@ const SignUp = () => {
     })
     
     return (
-        <div className='flex justify-center items-center w-full h-full bg-blue-500 py-20'>
+        <div className='flex justify-center items-center w-full h-full  min-h-screen bg-blue-500 '>
             <form onSubmit={handleSubmit}>
                 <div className='w-auto flex flex-col'>
                     <PiShoppingCartThin className='text-white text-[150px] ml-10 md:ml-18' />
@@ -107,4 +138,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+export default SignUp;
